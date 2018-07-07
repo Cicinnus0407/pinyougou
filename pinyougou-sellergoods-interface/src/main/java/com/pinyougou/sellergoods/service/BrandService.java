@@ -4,6 +4,7 @@ import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbBrand;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cicinnus
@@ -55,4 +56,6 @@ public interface BrandService {
      * @return
      */
     PageResult<TbBrand> findByPage(TbBrand brand, int pageNum, int pageSize);
+
+    List<Map<String,Object>> selectOptionList();
 }

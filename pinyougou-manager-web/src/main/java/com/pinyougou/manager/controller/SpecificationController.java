@@ -122,7 +122,7 @@ public class SpecificationController {
     }
 
     @RequestMapping("/selectOptionList")
-    public List<Map> selectOptionList() {
+    public List<Map<String,Object>> selectOptionList() {
         return specificationService.selectOptionList();
     }
 

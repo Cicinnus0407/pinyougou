@@ -68,6 +68,6 @@ public interface SpecificationService {
     public PageResult findPage(TbSpecification specification, int pageNum, int pageSize);
 
 
-    public List<Map> selectOptionList();
+    public List<Map<String,Object>> selectOptionList();
 
 }

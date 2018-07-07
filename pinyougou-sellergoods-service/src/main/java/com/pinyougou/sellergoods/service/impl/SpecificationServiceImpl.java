@@ -160,9 +160,8 @@ public class SpecificationServiceImpl implements SpecificationService {
     }
 
     @Override
-    public List<Map> selectOptionList() {
-//        return specificationMapper.selectOptionList();
-        return null;
+    public List<Map<String,Object>> selectOptionList() {
+        return specificationMapper.selectOptionList();
     }
 
 }

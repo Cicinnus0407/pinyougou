@@ -5,12 +5,15 @@ import com.pinyougou.entity.Result;
 import com.pinyougou.entity.PageResult;
 import com.pinyougou.pojo.TbBrand;
 import com.pinyougou.sellergoods.service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cicinnus
@@ -21,7 +24,11 @@ import java.util.List;
 public class BrandController {
 
     @Reference
-    private BrandService brandService;
+    BrandService brandService;
+
+    public BrandService getBrandService() {
+        return brandService;
+    }
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
     public List<TbBrand> getAll() {
@@ -84,7 +91,12 @@ public class BrandController {
     }
 
     @RequestMapping("/search")
-    public PageResult<TbBrand> search(@RequestBody TbBrand brand, int page, int size) {
-        return brandService.findByPage(brand, page, size);
+    public PageResult<TbBrand> search(@RequestBody TbBrand brand, int page, int rows) {
+        return brandService.findByPage(brand, page, rows);
+    }
+
+    @RequestMapping(value = "selectOptionList",method = RequestMethod.GET)
+    public List<Map<String,Object>> selectOptionList(){
+        return brandService.selectOptionList();
     }
 }
