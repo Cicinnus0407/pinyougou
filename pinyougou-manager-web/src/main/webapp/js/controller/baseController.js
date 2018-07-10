@@ -28,7 +28,7 @@ app.controller('baseController' ,function($scope){
 			var idx = $scope.selectIds.indexOf(id);
             $scope.selectIds.splice(idx, 1);//删除 
 		}
-	};
+	}
 	
 	
 	$scope.jsonToString=function(jsonString,key){

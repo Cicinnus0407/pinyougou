@@ -2,6 +2,7 @@ package com.pinyougou.sellergoods.service.impl;
 import java.util.List;
 
 import com.pinyougou.entity.PageResult;
+import com.pinyougou.pojo.TbItemExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
@@ -97,5 +98,11 @@ public class ItemCatServiceImpl implements ItemCatService {
 		Page<TbItemCat> page= (Page<TbItemCat>)itemCatMapper.selectByExample(example);		
 		return new PageResult(page.getTotal(), page.getResult());
 	}
-	
+
+	@Override
+	public List<TbItemCat> findByParentId(Long parentId) {
+		TbItemCatExample example = new TbItemCatExample();
+		example.createCriteria().andParentIdEqualTo(parentId);
+		return itemCatMapper.selectByExample(example);
+	}
 }

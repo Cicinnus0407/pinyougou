@@ -101,7 +101,6 @@ public class SellerController {
 	
 		/**
 	 * 查询+分页
-	 * @param brand
 	 * @param page
 	 * @param rows
 	 * @return
@@ -109,6 +108,17 @@ public class SellerController {
 	@RequestMapping("/search")
 	public PageResult search(@RequestBody TbSeller seller, int page, int rows  ){
 		return sellerService.findPage(seller, page, rows);		
+	}
+
+	@RequestMapping("/updateStatus")
+	public Result updateStatus(String sellerId, String status) {
+		try {
+			sellerService.updateStatus(sellerId, status);
+			return Result.success();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Result.fail(e.getMessage());
+		}
 	}
 	
 }
