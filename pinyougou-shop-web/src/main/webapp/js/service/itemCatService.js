@@ -1,4 +1,4 @@
-	//服务层
+//服务层
 app.service('itemCatService',function($http){
 	    	
 	//读取列表数据绑定到表单中
