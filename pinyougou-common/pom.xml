@@ -13,8 +13,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.csource.fastdfs</groupId>
+            <groupId>org.csource</groupId>
             <artifactId>fastdfs</artifactId>
+            <version>1.2</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
