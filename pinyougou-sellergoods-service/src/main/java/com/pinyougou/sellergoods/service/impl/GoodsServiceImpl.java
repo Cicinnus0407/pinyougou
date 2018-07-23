@@ -24,6 +24,7 @@ import java.util.Map;
  * @author Administrator
  */
 @Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
     @Autowired
@@ -79,7 +80,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     }
 
-    private void setItemValues(TbItem item,Goods goods){
+    private void setItemValues(TbItem item, Goods goods) {
         //商品分类
         item.setCategoryid(goods.getGoods().getCategory3Id());//三级分类ID
         item.setCreateTime(new Date());//创建日期
@@ -99,33 +100,33 @@ public class GoodsServiceImpl implements GoodsService {
         item.setSeller(seller.getNickName());
 
         //图片
-        List<Map> imageList = JSON.parseArray( goods.getGoodsDesc().getItemImages(), Map.class) ;
-        if(imageList.size()>0){
-            item.setImage( (String)imageList.get(0).get("url"));
+        List<Map> imageList = JSON.parseArray(goods.getGoodsDesc().getItemImages(), Map.class);
+        if (imageList.size() > 0) {
+            item.setImage((String) imageList.get(0).get("url"));
         }
 
     }
 
     //插入sku列表数据
-    private void saveItemList(Goods goods){
+    private void saveItemList(Goods goods) {
 
-        if("1".equals(goods.getGoods().getIsEnableSpec())){
-            for(TbItem item:   goods.getItemList()){
+        if ("1".equals(goods.getGoods().getIsEnableSpec())) {
+            for (TbItem item : goods.getItemList()) {
                 //构建标题  SPU名称+ 规格选项值
-                String title=goods.getGoods().getGoodsName();//SPU名称
-                Map<String,Object> map=  JSON.parseObject(item.getSpec());
-                for(String key:map.keySet()) {
-                    title+=" "+map.get(key);
+                String title = goods.getGoods().getGoodsName();//SPU名称
+                Map<String, Object> map = JSON.parseObject(item.getSpec());
+                for (String key : map.keySet()) {
+                    title += " " + map.get(key);
                 }
                 item.setTitle(title);
 
-                setItemValues(item,goods);
+                setItemValues(item, goods);
 
                 tbItemMapper.insert(item);
             }
-        }else{//没有启用规格
+        } else {//没有启用规格
 
-            TbItem item=new TbItem();
+            TbItem item = new TbItem();
             item.setTitle(goods.getGoods().getGoodsName());//标题
             item.setPrice(goods.getGoods().getPrice());//价格
             item.setNum(99999);//库存数量
@@ -133,7 +134,7 @@ public class GoodsServiceImpl implements GoodsService {
             item.setIsDefault("1");//默认
             item.setSpec("{}");//规格
 
-            setItemValues(item,goods);
+            setItemValues(item, goods);
 
             tbItemMapper.insert(item);
         }
@@ -188,7 +189,9 @@ public class GoodsServiceImpl implements GoodsService {
 
 
         for (Long id : ids) {
-            goodsMapper.deleteByPrimaryKey(id);
+            TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+            tbGoods.setIsDelete("1");
+            goodsMapper.updateByPrimaryKey(tbGoods);
         }
     }
 
@@ -201,6 +204,7 @@ public class GoodsServiceImpl implements GoodsService {
         TbGoodsExample example = new TbGoodsExample();
         Criteria criteria = example.createCriteria();
 
+        criteria.andIsDeleteIsNotNull();
         if (goods != null) {
             if (goods.getSellerId() != null && goods.getSellerId().length() > 0) {
                 criteria.andSellerIdEqualTo(goods.getSellerId());
@@ -233,4 +237,12 @@ public class GoodsServiceImpl implements GoodsService {
         return new PageResult(page.getTotal(), page.getResult());
     }
 
+    @Override
+    public void updateStatus(Long[] ids, String status) {
+        for (Long id : ids) {
+            TbGoods tbGoods = goodsMapper.selectByPrimaryKey(id);
+            tbGoods.setAuditStatus(status);
+            goodsMapper.updateByPrimaryKey(tbGoods);
+        }
+    }
 }

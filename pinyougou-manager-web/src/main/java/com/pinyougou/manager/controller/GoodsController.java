@@ -103,4 +103,15 @@ public class GoodsController {
         return goodsService.findPage(goods, page, rows);
     }
 
+
+    @RequestMapping("/updateStatus")
+    public Result updateStatus(Long[] ids ,String stauts) {
+        try {
+            goodsService.updateStatus(ids, stauts);
+            return Result.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.fail(e.getMessage());
+        }
+    }
 }

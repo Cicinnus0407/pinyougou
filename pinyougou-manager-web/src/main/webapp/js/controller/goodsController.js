@@ -1,5 +1,5 @@
 //控制层
-app.controller('goodsController', function ($scope, $controller, goodsService,itemCatService) {
+app.controller('goodsController', function ($scope, $controller, goodsService, itemCatService) {
 
     $controller('baseController', {$scope: $scope});//继承
 
@@ -87,4 +87,17 @@ app.controller('goodsController', function ($scope, $controller, goodsService,it
             }
         })
     };
+
+
+
+    $scope.updateStatus = function (status) {
+        goodsService.updateStatus($scope.selectIds, status).success(function (res) {
+            if (res.success) {
+                $scope.reloadList();
+                $scope.selectIds = [];
+            } else {
+                alert(res.message);
+            }
+        })
+    }
 });	
